@@ -15,8 +15,10 @@ services:
       - 5432
   web:
     build: .
-    volumes:
-      - .:/code
+    environment:
+      - FLASK_DEBUG=1
+      - FLASK_ENV=development
+    volumes: ["./web:/app"]
     ports:
       - "5000:5000"
     depends_on:
