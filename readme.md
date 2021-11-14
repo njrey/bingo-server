@@ -7,3 +7,5 @@
 
 1. Rename web directory to something else
 2. Add SQLAlchemy
+   - Set up actual config stuff
+   - Break out **init**, db stuff, models, app, etc. to diff files
