@@ -18,8 +18,9 @@ services:
     environment:
       - FLASK_DEBUG=1
       - FLASK_ENV=development
+      - FLASK_APP=web
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
-    volumes: ["./web:/app"]
+    volumes: ["./web:/app/web"]
     ports:
       - "5000:5000"
     depends_on:

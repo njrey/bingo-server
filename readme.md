@@ -6,6 +6,8 @@
 ### TODO
 
 1. Rename web directory to something else
-2. Add SQLAlchemy
-   - Set up actual config stuff
-   - Break out **init**, db stuff, models, app, etc. to diff files
+1. Set up actual config stuff
+1. Break out **init**, db stuff, models, app, etc. to diff files
+1. Actually get cors to work through config?
+1. Fix routes so it's not /boards/boards
+1. Use `black` or something for like a prettier/eslint

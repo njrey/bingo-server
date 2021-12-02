@@ -1,32 +1,16 @@
 import json
-from flask import Flask, request, make_response
-from flask_sqlalchemy import SQLAlchemy
+from flask import Blueprint, request, make_response
+from web.db import Board, db_session
 
-from config import Config
+bp = Blueprint('boards', __name__, url_prefix='/boards')
 
-
-app = Flask(__name__, instance_relative_config=True)
-
-app.config['CORS_HEADERS'] = 'Content-Type'
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-
-
-class Board(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(255))
-  squares = db.Column(db.ARRAY(db.String(255)))
-
-  def __repr__(self):
-      return '<User %r>' % self.username
-
-
-@app.route('/')
+@bp.route('/')
 def hello_world():
   return 'Hello, Docker!'
 
-@app.route('/boards', methods=["GET", "POST", "OPTIONS"])
+@bp.route('/boards', methods=["GET", "POST", "OPTIONS"])
 def get_boards() :
+
   if request.method == 'GET':
 
     results = Board.query.all()
@@ -43,8 +27,8 @@ def get_boards() :
 
     print(request.get_json())
     board = Board(name='name', squares=request.get_json())
-    db.session.add(board)
-    db.session.commit()
+    db_session.add(board)
+    db_session.commit()
     resp = make_response(json.dumps(request.get_json()))
     resp.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
     return resp
@@ -63,11 +47,3 @@ def get_boards() :
       resp.headers['Access-Control-Allow-Headers'] = 'X-Requested-With, Content-Type, Accept, Origin, Authorization'
       resp.headers['Access-Control-Allow-Methods'] =  'GET, POST, PUT, DELETE, OPTIONS'
       return resp
-
-@app.route('/initdb')
-def create_db():
-  db.create_all()
-  return "ECHO: Database up"
-
-if __name__ == "__main__":
-  app.run(host ='0.0.0.0')
